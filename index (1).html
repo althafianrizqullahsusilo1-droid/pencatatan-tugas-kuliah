@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Catatan Tugas Kuliah</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light;
+--bg:#f5f6fa;--card:#fff;--text:#1d2433;--muted:#6b7385;--line:#e3e6ee;--accent:#3b6df0;--accent-t:#fff;--danger:#d64545;--ok:#2e9d62;--warn:#d98a0b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#14161c;--card:#1d2028;--text:#eceef4;--muted:#9097a8;--line:#2d313d;--accent:#6c93ff;--accent-t:#0f1320;--danger:#ff7a7a;--ok:#55c98a;--warn:#f0b04a}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#14161c;--card:#1d2028;--text:#eceef4;--muted:#9097a8;--line:#2d313d;--accent:#6c93ff;--accent-t:#0f1320;--danger:#ff7a7a;--ok:#55c98a;--warn:#f0b04a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:680px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.5rem;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 20px;font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+form{display:grid;gap:12px}
+label{display:grid;gap:4px;font-size:.85rem;color:var(--muted)}
+input[type=text],input[type=date]{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:420px){.row{grid-template-columns:1fr}}
+button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:10px 16px}
+.primary{background:var(--accent);color:var(--accent-t);font-weight:600}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:20px 0 10px}
+.tabs{display:flex;gap:6px}
+.tab{background:var(--card);color:var(--muted);border:1px solid var(--line);padding:6px 12px;font-size:.85rem}
+.tab.on{background:var(--accent);color:var(--accent-t);border-color:var(--accent)}
+.count{color:var(--muted);font-size:.85rem}
+ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+li{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+li input[type=checkbox]{width:22px;height:22px;margin-top:2px;accent-color:var(--accent);flex:none;cursor:pointer}
+.body{flex:1;min-width:0}
+.name{font-weight:600;overflow-wrap:anywhere}
+li.done .name{text-decoration:line-through;color:var(--muted)}
+.meta{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin-top:2px}
+.badge{font-weight:600}
+.late{color:var(--danger)}.soon{color:var(--warn)}.fine{color:var(--ok)}
+.del{background:transparent;color:var(--muted);padding:4px 8px;font-size:1.1rem;line-height:1}
+.del:hover{color:var(--danger)}
+.empty{text-align:center;color:var(--muted);padding:28px 12px;border:1px dashed var(--line);border-radius:14px}
+.note{color:var(--muted);font-size:.78rem;text-align:center;margin-top:18px}
+textarea{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;min-height:68px;resize:vertical}
+textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.btns{display:flex;gap:8px}
+.btns .primary{flex:1}
+.cancel{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.remind{background:var(--card);border:1px solid var(--warn);border-left-width:5px;border-radius:14px;padding:12px 14px;margin:0 0 16px;font-size:.9rem}
+.remind[hidden]{display:none}
+.remind strong{display:block;margin-bottom:4px;color:var(--warn)}
+.mk{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:0 10px;color:var(--text);font-weight:600}
+.cat{font-size:.88rem;color:var(--muted);margin-top:6px;white-space:pre-wrap;overflow-wrap:anywhere}
+.edit{background:transparent;color:var(--muted);padding:4px 8px;font-size:1.05rem;line-height:1}
+.edit:hover{color:var(--accent)}
+details.card summary{cursor:pointer;font-weight:600}
+details.card .in{display:grid;gap:12px;margin-top:12px}
+.help{font-size:.82rem;color:var(--muted);margin:0}
+#syncState{font-weight:400;font-size:.85rem;color:var(--muted)}
+#syncState.ok{color:var(--ok)}#syncState.bad{color:var(--danger)}
+.field{display:grid;gap:4px}
+.lbl{font-size:.85rem;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0}
+.chip{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.88rem}
+.chip.on{background:var(--accent);color:var(--accent-t);border-color:var(--accent);font-weight:600}
+.chips.mg .chip{border-style:dashed;color:var(--danger)}
+.addmk{display:flex;gap:8px}
+.addmk input{flex:1}
+.linkbtn{background:none;color:var(--accent);padding:0;font-size:.85rem}
+.hint{font-size:.85rem;color:var(--muted);margin:0}
+.formmsg{margin:0;font-size:.9rem;color:var(--danger);font-weight:600}
+.formmsg:empty{display:none}
+.formmsg.ok{color:var(--ok)}
+.addmk input{min-width:0}
+.addmk button{white-space:nowrap}
+</style>
+</head>
+<body>
+<main>
+  <h1>📚 Catatan Tugas Kuliah</h1>
+  <p class="sub">Catat tugas, pantau deadline, dan centang kalau sudah selesai.</p>
+  <div id="remind" class="remind" hidden></div>
+
+  <section class="card">
+    <form id="form" novalidate>
+      <label>Nama tugas
+        <input type="text" id="nama" placeholder="Contoh: Makalah Pengantar Ekonomi" required maxlength="120">
+      </label>
+      <div class="field">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="lbl">Semester (ketuk untuk memilih)</span>
+          <button type="button" class="linkbtn" id="semManage">Kelola</button>
+        </div>
+        <input type="hidden" id="sem">
+        <div class="chips" id="semChips"></div>
+        <div class="addmk">
+          <input type="text" id="semNew" placeholder="Tambah semester baru, misalnya Semester 3" maxlength="40">
+          <button type="button" class="cancel" id="semAdd">+ Semester</button>
+        </div>
+      </div>
+      <div class="field">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="lbl">Mata kuliah (ketuk untuk memilih)</span>
+          <button type="button" class="linkbtn" id="mkManage">Kelola</button>
+        </div>
+        <input type="hidden" id="mk">
+        <div class="chips" id="mkChips"></div>
+        <div class="addmk">
+          <input type="text" id="mkNew" placeholder="Tambah mata kuliah baru" maxlength="80">
+          <button type="button" class="cancel" id="mkAdd">+ Mata kuliah</button>
+        </div>
+      </div>
+      <div class="row">
+        <label>Tanggal diberi tugas
+          <input type="date" id="diberi" required>
+        </label>
+        <label>Deadline
+          <input type="date" id="deadline" required>
+        </label>
+      </div>
+      <label>Catatan / keterangan (opsional)
+        <textarea id="catatan" placeholder="Contoh: minimal 5 halaman, kumpul lewat e-learning" maxlength="500"></textarea>
+      </label>
+      <div class="btns">
+        <button class="primary" type="submit" id="submitBtn">+ Tambah tugas</button>
+        <button class="cancel" type="button" id="cancelBtn" hidden>Batal</button>
+      </div>
+      <p class="formmsg" id="formMsg" role="alert"></p>
+    </form>
+  </section>
+
+  <div class="bar">
+    <div class="tabs" id="tabs">
+      <button class="tab on" data-f="semua">Semua</button>
+      <button class="tab" data-f="belum">Belum</button>
+      <button class="tab" data-f="selesai">Selesai</button>
+    </div>
+    <span class="count" id="count"></span>
+  </div>
+
+  <ul id="list"></ul>
+  <div class="btns" style="margin-top:18px">
+    <button class="cancel" id="exportBtn" type="button">⬇ Ekspor ke Excel</button>
+    <button class="cancel" id="importBtn" type="button">⬆ Impor dari Excel</button>
+    <input type="file" id="importFile" accept=".xlsx,.xls,.csv" hidden>
+  </div>
+  <details class="card" style="margin-top:18px">
+    <summary>🔄 Sinkron otomatis ke Google Sheets <span id="syncState"></span></summary>
+    <div class="in">
+      <p class="help">Tempel tautan aplikasi web dari Google Apps Script (berakhiran /exec) dan kata sandi yang kamu tulis di skripnya. Setelah aktif, semua perubahan tersimpan otomatis ke spreadsheet.</p>
+      <label>Tautan Apps Script
+        <input type="text" id="syncUrl" placeholder="https://script.google.com/macros/s/.../exec">
+      </label>
+      <label>Kata sandi (KUNCI di skrip)
+        <input type="text" id="syncKey" placeholder="kata sandi">
+      </label>
+      <div class="btns">
+        <button class="primary" type="button" id="syncSave">Simpan &amp; hubungkan</button>
+        <button class="cancel" type="button" id="syncOff">Putuskan</button>
+      </div>
+    </div>
+  </details>
+  <p class="note" id="note"></p>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+(function(){
+  var KEY = "catatan-tugas-v1";
+  var tasks = [];
+  var filter = "semua";
+  var docRef = null;
+  var editId = null;
+  var $ = function(id){ return document.getElementById(id); };
+
+  function makeChooser(c){
+    var list = (function(){ try { return JSON.parse(localStorage.getItem(c.store)) || []; } catch(e){ return []; } })();
+    var manage = false;
+    function save(){ try { localStorage.setItem(c.store, JSON.stringify(list)); } catch(e){} }
+    function all(){
+      var seen = {}, out = [];
+      list.concat(tasks.map(function(t){ return t[c.field]; })).forEach(function(n){
+        n = (n || "").trim();
+        if (!n) return;
+        var k = n.toLowerCase();
+        if (seen[k]) return;
+        seen[k] = 1; out.push(n);
+      });
+      return out.sort(function(a,b){ return a.localeCompare(b, "id", { numeric: true }); });
+    }
+    function render(){
+      var box = $(c.box);
+      box.textContent = "";
+      box.className = "chips" + (manage ? " mg" : "");
+      var cur = ($(c.val).value || "").toLowerCase();
+      var items = all();
+      if (!items.length) {
+        var h = document.createElement("p");
+        h.className = "hint";
+        h.textContent = c.empty;
+        box.appendChild(h);
+      }
+      items.forEach(function(n){
+        var on = n.toLowerCase() === cur;
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "chip" + (on && !manage ? " on" : "");
+        b.setAttribute("role", "radio");
+        b.setAttribute("aria-checked", on ? "true" : "false");
+        b.textContent = manage ? "✕ " + n : (on ? "✓ " : "") + n;
+        b.addEventListener("click", function(){
+          if (manage) { remove(n); return; }
+          $(c.val).value = on ? "" : n;
+          render();
+        });
+        box.appendChild(b);
+      });
+      $(c.mng).textContent = manage ? "Selesai" : "Kelola";
+    }
+    function remove(n){
+      var k = n.toLowerCase();
+      var used = tasks.filter(function(t){ return (t[c.field] || "").toLowerCase() === k; }).length;
+      if (used) { alert(c.label + " ini masih dipakai oleh " + used + " tugas, jadi belum bisa dihapus."); return; }
+      list = list.filter(function(x){ return x.toLowerCase() !== k; });
+      save();
+      if (($(c.val).value || "").toLowerCase() === k) $(c.val).value = "";
+      render();
+    }
+    function add(){
+      var inp = $(c.inp), n = inp.value.trim();
+      if (!n) { inp.focus(); return; }
+      var exist = all().filter(function(x){ return x.toLowerCase() === n.toLowerCase(); })[0];
+      if (!exist) { list.push(n); save(); }
+      $(c.val).value = exist || n;
+      inp.value = "";
+      manage = false;
+      render();
+    }
+    $(c.add).addEventListener("click", add);
+    $(c.inp).addEventListener("keydown", function(ev){ if (ev.key === "Enter") { ev.preventDefault(); add(); } });
+    $(c.mng).addEventListener("click", function(){ manage = !manage; render(); });
+    return { render: render };
+  }
+  var mkC = makeChooser({ store: "catatan-tugas-mk", field: "mk", val: "mk", box: "mkChips", inp: "mkNew", add: "mkAdd", mng: "mkManage",
+    label: "Mata kuliah", empty: "Belum ada mata kuliah. Ketik namanya di bawah lalu tekan tombol + di sampingnya." });
+  var semC = makeChooser({ store: "catatan-tugas-sem", field: "sem", val: "sem", box: "semChips", inp: "semNew", add: "semAdd", mng: "semManage",
+    label: "Semester", empty: "Belum ada semester. Ketik misalnya Semester 3 lalu tekan tombol + di sampingnya." });
+  function renderChips(){ semC.render(); mkC.render(); }
+
+  function today(){
+    var d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+  }
+  function fmt(s){
+    var p = s.split("-");
+    var bln = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+    return Number(p[2]) + " " + bln[Number(p[1])-1] + " " + p[0];
+  }
+  function daysLeft(s){
+    var a = new Date(today() + "T00:00:00"), b = new Date(s + "T00:00:00");
+    return Math.round((b - a) / 86400000);
+  }
+
+  function loadLocal(){
+    try { var r = localStorage.getItem(KEY); return r ? JSON.parse(r) : []; } catch(e){ return []; }
+  }
+  function save(){
+    persist();
+    touch(); schedulePush();
+  }
+
+  function renderRemind(){
+    var box = $("remind");
+    box.textContent = "";
+    var due = tasks.filter(function(t){ return !t.done && daysLeft(t.deadline) <= 3; }).sort(function(a,b){ return a.deadline < b.deadline ? -1 : a.deadline > b.deadline ? 1 : 0; });
+    if (!due.length) { box.hidden = true; return; }
+    box.hidden = false;
+    var h = document.createElement("strong");
+    h.textContent = "⏰ Pengingat: " + due.length + " tugas mendekati deadline";
+    box.appendChild(h);
+    due.forEach(function(t){
+      var d = daysLeft(t.deadline);
+      var p = document.createElement("div");
+      p.textContent = "• " + t.nama + " — " + (d < 0 ? "terlambat " + (-d) + " hari" : d === 0 ? "deadline hari ini" : d + " hari lagi");
+      box.appendChild(p);
+    });
+  }
+
+  function render(){
+    var list = $("list");
+    list.textContent = "";
+    renderRemind();
+    renderChips();
+    var shown = tasks.slice().sort(function(a,b){
+      if (a.done !== b.done) return a.done ? 1 : -1;
+      return a.deadline < b.deadline ? -1 : a.deadline > b.deadline ? 1 : 0;
+    }).filter(function(t){
+      return filter === "semua" || (filter === "belum" ? !t.done : t.done);
+    });
+    var left = tasks.filter(function(t){ return !t.done; }).length;
+    $("count").textContent = left + " belum selesai dari " + tasks.length;
+
+    if (!shown.length) {
+      var e = document.createElement("div");
+      e.className = "empty";
+      e.textContent = tasks.length ? "Tidak ada tugas di kategori ini." : "Belum ada tugas. Tambahkan tugas pertamamu di atas!";
+      list.appendChild(e);
+      return;
+    }
+    shown.forEach(function(t){
+      var li = document.createElement("li");
+      if (t.done) li.className = "done";
+
+      var cb = document.createElement("input");
+      cb.type = "checkbox"; cb.checked = !!t.done;
+      cb.setAttribute("aria-label", "Tandai selesai");
+      cb.addEventListener("change", function(){ t.done = cb.checked; save(); render(); });
+
+      var body = document.createElement("div"); body.className = "body";
+      var nm = document.createElement("div"); nm.className = "name"; nm.textContent = t.nama;
+      var meta = document.createElement("div"); meta.className = "meta";
+      var m1 = document.createElement("span"); m1.textContent = "Diberi: " + fmt(t.diberi);
+      var m2 = document.createElement("span"); m2.textContent = "Deadline: " + fmt(t.deadline);
+      if (t.sem) { var sm = document.createElement("span"); sm.className = "mk"; sm.textContent = t.sem; meta.appendChild(sm); }
+      if (t.mk) { var mk = document.createElement("span"); mk.className = "mk"; mk.textContent = t.mk; meta.appendChild(mk); }
+      meta.appendChild(m1); meta.appendChild(m2);
+
+      if (!t.done) {
+        var d = daysLeft(t.deadline);
+        var b = document.createElement("span"); b.className = "badge";
+        if (d < 0) { b.classList.add("late"); b.textContent = "Terlambat " + (-d) + " hari"; }
+        else if (d === 0) { b.classList.add("late"); b.textContent = "Hari ini!"; }
+        else if (d <= 3) { b.classList.add("soon"); b.textContent = d + " hari lagi"; }
+        else { b.classList.add("fine"); b.textContent = d + " hari lagi"; }
+        meta.appendChild(b);
+      } else {
+        var ok = document.createElement("span"); ok.className = "badge fine"; ok.textContent = "Selesai ✓";
+        meta.appendChild(ok);
+      }
+      body.appendChild(nm); body.appendChild(meta);
+      if (t.catatan) { var cat = document.createElement("div"); cat.className = "cat"; cat.textContent = t.catatan; body.appendChild(cat); }
+
+      var del = document.createElement("button");
+      del.className = "del"; del.textContent = "✕"; del.title = "Hapus"; del.setAttribute("aria-label", "Hapus tugas");
+      del.addEventListener("click", function(){
+        if (confirm("Hapus tugas ini?")) {
+          tasks = tasks.filter(function(x){ return x.id !== t.id; });
+          if (editId === t.id) resetForm();
+          save(); render();
+        }
+      });
+
+      var ed = document.createElement("button");
+      ed.className = "edit"; ed.textContent = "✎"; ed.title = "Edit"; ed.setAttribute("aria-label", "Edit tugas");
+      ed.addEventListener("click", function(){ startEdit(t); });
+
+      li.appendChild(cb); li.appendChild(body); li.appendChild(ed); li.appendChild(del);
+      list.appendChild(li);
+    });
+  }
+
+  function resetForm(){
+    editId = null;
+    $("nama").value = ""; $("mk").value = ""; $("sem").value = ""; $("catatan").value = ""; $("deadline").value = "";
+    $("diberi").value = today();
+    $("submitBtn").textContent = "+ Tambah tugas";
+    renderChips();
+    $("cancelBtn").hidden = true;
+  }
+  function startEdit(t){
+    editId = t.id;
+    $("nama").value = t.nama; $("mk").value = t.mk || ""; $("sem").value = t.sem || ""; $("catatan").value = t.catatan || "";
+    $("diberi").value = t.diberi; $("deadline").value = t.deadline;
+    $("submitBtn").textContent = "Simpan perubahan";
+    renderChips();
+    $("cancelBtn").hidden = false;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    $("nama").focus();
+  }
+  $("cancelBtn").addEventListener("click", resetForm);
+
+  var msgTimer = null;
+  function showMsg(t, ok){
+    var m = $("formMsg");
+    m.textContent = t;
+    m.className = "formmsg" + (ok ? " ok" : "");
+    clearTimeout(msgTimer);
+    msgTimer = setTimeout(function(){ m.textContent = ""; }, 3500);
+  }
+
+  $("form").addEventListener("submit", function(ev){
+    ev.preventDefault();
+    var nama = $("nama").value.trim();
+    var diberi = $("diberi").value, deadline = $("deadline").value;
+    if (!nama || !diberi || !deadline) {
+      var miss = !nama ? "nama tugas" : !deadline ? "deadline" : "tanggal diberi tugas";
+      showMsg("Isi " + miss + " dulu ya.", false);
+      $(!nama ? "nama" : !deadline ? "deadline" : "diberi").focus();
+      return;
+    }
+    if (deadline < diberi && !confirm("Deadline lebih awal dari tanggal diberi tugas. Tetap simpan?")) return;
+    var mkVal = $("mk").value.trim(), semVal = $("sem").value.trim(), catVal = $("catatan").value.trim();
+    var ex = editId ? tasks.filter(function(x){ return x.id === editId; })[0] : null;
+    if (ex) { ex.nama = nama; ex.mk = mkVal; ex.sem = semVal; ex.catatan = catVal; ex.diberi = diberi; ex.deadline = deadline; }
+    else tasks.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), nama: nama, mk: mkVal, sem: semVal, catatan: catVal, diberi: diberi, deadline: deadline, done: false });
+    save(); render();
+    var wasEdit = !!ex;
+    resetForm();
+    showMsg(wasEdit ? "✓ Perubahan disimpan." : "✓ Tugas ditambahkan.", true);
+  });
+
+  $("tabs").addEventListener("click", function(ev){
+    var f = ev.target.getAttribute && ev.target.getAttribute("data-f");
+    if (!f) return;
+    filter = f;
+    Array.prototype.forEach.call($("tabs").children, function(b){ b.classList.toggle("on", b.getAttribute("data-f") === f); });
+    render();
+  });
+
+  // Mulai dengan data lokal, lalu naik ke penyimpanan akun bila tersedia
+  $("diberi").value = today();
+  tasks = loadLocal();
+  $("note").textContent = "Data tersimpan otomatis di browser ini. Pakai Ekspor/Impor Excel untuk cadangan atau pindah perangkat.";
+  render();
+
+  var SKEY = "catatan-tugas-sync", TSKEY = "catatan-tugas-ts";
+  var cfg = (function(){ try { return JSON.parse(localStorage.getItem(SKEY)) || {}; } catch(e){ return {}; } })();
+  var localTs = Number((function(){ try { return localStorage.getItem(TSKEY); } catch(e){ return 0; } })()) || 0;
+  var pushTimer = null;
+
+  function persist(){ try { localStorage.setItem(KEY, JSON.stringify(tasks)); } catch(e){} }
+  function saveTs(){ try { localStorage.setItem(TSKEY, String(localTs)); } catch(e){} }
+  function touch(){ localTs = Date.now(); saveTs(); }
+  function setSync(msg, cls){ var el = $("syncState"); el.textContent = msg ? "· " + msg : ""; el.className = cls || ""; }
+  function schedulePush(){
+    if (!cfg.url) return;
+    clearTimeout(pushTimer);
+    setSync("menyimpan…");
+    pushTimer = setTimeout(push, 1200);
+  }
+  function push(){
+    if (!cfg.url) return;
+    return fetch(cfg.url, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ key: cfg.key || "", items: tasks, updated: localTs }) })
+      .then(function(r){ return r.json(); })
+      .then(function(j){ if (j.error) throw new Error(j.error); setSync("tersinkron ✓", "ok"); })
+      .catch(function(){ setSync("gagal sinkron", "bad"); });
+  }
+  function pull(){
+    if (!cfg.url) return;
+    setSync("memeriksa…");
+    fetch(cfg.url + (cfg.url.indexOf("?") > -1 ? "&" : "?") + "key=" + encodeURIComponent(cfg.key || ""))
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        if (j.error) throw new Error(j.error);
+        var remote = Array.isArray(j.items) ? j.items : [];
+        var rts = Number(j.updated) || 0;
+        if (rts > localTs) {
+          tasks = remote; localTs = rts; persist(); saveTs(); render();
+          setSync("tersinkron ✓", "ok");
+        } else if (localTs > rts || (!rts && tasks.length)) {
+          if (!localTs) touch();
+          push();
+        } else {
+          setSync("tersinkron ✓", "ok");
+        }
+      })
+      .catch(function(){ setSync("gagal terhubung", "bad"); });
+  }
+
+  $("syncUrl").value = cfg.url || "";
+  $("syncKey").value = cfg.key || "";
+  $("syncSave").addEventListener("click", function(){
+    var u = $("syncUrl").value.trim();
+    if (!/^https:\/\/script\.google\.com\/.+\/exec/.test(u)) { alert("Tautan harus dari script.google.com dan berakhiran /exec"); return; }
+    cfg = { url: u, key: $("syncKey").value.trim() };
+    try { localStorage.setItem(SKEY, JSON.stringify(cfg)); } catch(e){}
+    pull();
+  });
+  $("syncOff").addEventListener("click", function(){
+    cfg = {};
+    try { localStorage.removeItem(SKEY); } catch(e){}
+    $("syncUrl").value = ""; $("syncKey").value = "";
+    setSync("belum aktif");
+  });
+  if (cfg.url) pull(); else setSync("belum aktif");
+
+  function pad(n){ return String(n).padStart(2,"0"); }
+  function toISO(v){
+    if (v == null || v === "") return "";
+    if (typeof v === "number") {
+      var d = new Date(Math.round((v - 25569) * 86400000));
+      return d.getUTCFullYear() + "-" + pad(d.getUTCMonth()+1) + "-" + pad(d.getUTCDate());
+    }
+    var s = String(v).trim();
+    var m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (m) return m[1] + "-" + pad(m[2]) + "-" + pad(m[3]);
+    m = s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/);
+    if (m) return m[3] + "-" + pad(m[2]) + "-" + pad(m[1]);
+    return "";
+  }
+
+  $("exportBtn").addEventListener("click", function(){
+    if (!tasks.length) { alert("Belum ada data untuk diekspor."); return; }
+    var rows = tasks.map(function(t){
+      return { "Nama Tugas": t.nama, "Semester": t.sem || "", "Mata Kuliah": t.mk || "", "Tanggal Diberi": t.diberi, "Deadline": t.deadline, "Catatan": t.catatan || "", "Status": t.done ? "Selesai" : "Belum" };
+    });
+    if (window.XLSX) {
+      var ws = XLSX.utils.json_to_sheet(rows);
+      ws["!cols"] = [{wch:34},{wch:14},{wch:22},{wch:15},{wch:15},{wch:40},{wch:10}];
+      var wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Tugas");
+      XLSX.writeFile(wb, "catatan-tugas.xlsx");
+    } else {
+      var keys = Object.keys(rows[0]);
+      var q = function(v){ return '"' + String(v).replace(/"/g, '""') + '"'; };
+      var csv = "\ufeff" + keys.map(q).join(",") + "\n" + rows.map(function(r){ return keys.map(function(k){ return q(r[k]); }).join(","); }).join("\n");
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+      a.download = "catatan-tugas.csv";
+      document.body.appendChild(a); a.click(); a.remove();
+    }
+  });
+
+  $("importBtn").addEventListener("click", function(){ $("importFile").click(); });
+  $("importFile").addEventListener("change", function(){
+    var f = this.files[0];
+    if (!f) return;
+    if (!window.XLSX) { alert("Fitur impor membutuhkan koneksi internet."); return; }
+    var r = new FileReader();
+    r.onload = function(e){
+      try {
+        var wb = XLSX.read(e.target.result, { type: "array" });
+        var rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: "" });
+        var added = 0;
+        rows.forEach(function(x){
+          var nama = String(x["Nama Tugas"] || "").trim();
+          var deadline = toISO(x["Deadline"]);
+          if (!nama || !deadline) return;
+          var dup = tasks.some(function(t){ return t.nama === nama && t.deadline === deadline; });
+          if (dup) return;
+          tasks.push({
+            id: Date.now().toString(36) + Math.random().toString(36).slice(2,6),
+            nama: nama,
+            mk: String(x["Mata Kuliah"] || "").trim(),
+            sem: String(x["Semester"] || "").trim(),
+            catatan: String(x["Catatan"] || "").trim(),
+            diberi: toISO(x["Tanggal Diberi"]) || deadline,
+            deadline: deadline,
+            done: String(x["Status"] || "").trim().toLowerCase() === "selesai"
+          });
+          added++;
+        });
+        save(); render();
+        alert(added + " tugas berhasil diimpor.");
+      } catch(err) {
+        alert("File tidak bisa dibaca. Pastikan formatnya sama seperti hasil ekspor.");
+      }
+      $("importFile").value = "";
+    };
+    r.readAsArrayBuffer(f);
+  });
+})();
+</script>
+</body>
+</html>
